@@ -27,6 +27,13 @@ const exampleNote = "C4"; // the note it plays
 // ---------- State ----------
 // State variables are the parts of your program that change over time.
 // For example: which octave you're playing in, or whether a drone is on.
+let cMajor = ["C4", "E4", "G4"];
+let dMajor = ["D4","F#4","A4"];
+let eMajor = ["E4","G#4","B4"];
+let fMajor = ["F4","A4","C4"];
+let gMajor = ["G4","B4","D4"];
+let aMajor = ["A4","C#4","E4"];
+let bMajor = ["B4","D#4","F#4"]
 
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
