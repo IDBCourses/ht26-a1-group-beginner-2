@@ -21,12 +21,15 @@
 // ---------- Settings ----------
 // Settings variables should contain all of the "fixed" parts of your programs
 // For example: which key does what, which notes you can play, the tempo.
-const exampleKey = "a"; // the key that plays the example note
+const exampleKey = "d"; // the key that plays the example note
 const exampleNote = "C4"; // the note it plays
+
+let order = 0;
 
 // ---------- State ----------
 // State variables are the parts of your program that change over time.
 // For example: which octave you're playing in, or whether a drone is on.
+let gMaj = ["E4", "G#4", "B4"];
 
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
@@ -48,6 +51,21 @@ function use() {
 
 // ---------- Controls (Event Handlers) ----------
 // Runs every time a key goes down.
+function playGMaj(event) {
+  let now = Tone.now();
+  if (event.repeat === false) {
+  if (event.key === "a") {
+    console.log("check " + order + gMaj[order])
+    synth.triggerAttack(gMaj[order], "8n");
+    order += 1;
+    if (order > (gMaj.length - 1)) {
+      order = 0;
+    }
+  }
+  }
+}
+
+
 function keyDown(event) {
   Tone.start(); // browsers only allow sound after the player has pressed something
 
@@ -56,6 +74,7 @@ function keyDown(event) {
     console.log("Key down:", event.key);
 
     // Example: replace this with your own instrument.
+
     if (event.key === exampleKey) {
       synth.triggerAttack(exampleNote, Tone.now()); // keeps sounding until triggerRelease
     }
@@ -67,6 +86,12 @@ function keyUp(event) {
   console.log("Key up:", event.key);
 
   // Example: replace this with your own instrument.
+  if (event.key === "a") {
+    for (let i = 0; i < gMaj.length; i ++) {
+      synth.triggerRelease(gMaj[i], Tone.now());
+      console.log("array stopped");
+    }
+  }
   if (event.key === exampleKey) {
     synth.triggerRelease(exampleNote, Tone.now());
   }
@@ -79,7 +104,7 @@ function setup() {
   use(); // start the use loop
 
   // Put your event listener code here
-  window.addEventListener("keydown", keyDown);
+  window.addEventListener("keydown", playGMaj);
   window.addEventListener("keyup", keyUp);
 }
 
