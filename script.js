@@ -27,22 +27,41 @@ const exampleNote = "C4"; // the note it plays
 // ---------- State ----------
 // State variables are the parts of your program that change over time.
 // For example: which octave you're playing in, or whether a drone is on.
-
+let distortion = 0.1;
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
 const synth = new Tone.PolySynth(Tone.Synth).toDestination(); // can play several notes at once
+const distortionEffect = new Tone.Distortion(0.8).toDestination(); // an effect that makes the sound more "gritty"
 
+function raiseDistortion() {
+  distortion = distortion + 0.01;
+  if (distortion > 1) {
+    distortion = 1;
+  }
+    distortionEffect.distortion = distortion;
+}
+
+function lowerDistortion() {
+  distortion = distortion - 0.01;
+  if (distortion < 0) {
+    distortion = 0;
+  }
+  distortionEffect.distortion = distortion;
+}
 // ---------- Update ----------
 // Update the state. This is called every 100ms.
 function update() {
   // Example: replace this with your own instrument.
+  lowerDistortion();
+  setTimeout(update, 250); // call update() again in 100 milliseconds
+  console.log("Update: lowering distortion to: " + distortion);
 
-  setTimeout(update, 100); // call update() again in 100 milliseconds
 }
 
 // ---------- Use ----------
 // Use the state to make sound. This is called every 100ms.
 function use() {
+  synth.connect(distortionEffect);
   setTimeout(use, 100); // call use() again in 100 milliseconds
 }
 
@@ -53,23 +72,25 @@ function keyDown(event) {
 
   // Holding a key down sends keydown again and again. Only react to the first one.
   if (event.repeat === false) {
-    console.log("Key down:", event.key);
+    console.log("key down:", event.key);
 
     // Example: replace this with your own instrument.
     if (event.key === exampleKey) {
       synth.triggerAttack(exampleNote, Tone.now()); // keeps sounding until triggerRelease
     }
   }
+  if (event.key === "x") {
+    raiseDistortion();
+    console.log("x pressed: raising distortion to: " + distortion);
+  }
 }
 
 // Runs every time a key comes up.
 function keyUp(event) {
   console.log("Key up:", event.key);
-
+  if (event.key === exampleKey)
   // Example: replace this with your own instrument.
-  if (event.key === exampleKey) {
-    synth.triggerRelease(exampleNote, Tone.now());
-  }
+  synth.triggerRelease(exampleNote, Tone.now());
 }
 
 // ---------- Setup ----------
