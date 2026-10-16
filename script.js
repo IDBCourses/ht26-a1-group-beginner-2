@@ -21,13 +21,13 @@
 // ---------- Settings ----------
 // Settings variables should contain all of the "fixed" parts of your programs
 // For example: which key does what, which notes you can play, the tempo.
-const exampleKey = "a"; // the key that plays the example note
-const exampleNote = "C4"; // the note it plays
+
+const ringPhase1 = ["E", "D#", "F#", "E"]
 
 // ---------- State ----------
 // State variables are the parts of your program that change over time.
 // For example: which octave you're playing in, or whether a drone is on.
-
+let octave = "4"
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
 const synth = new Tone.PolySynth(Tone.Synth).toDestination(); // can play several notes at once
@@ -49,28 +49,29 @@ function use() {
 // ---------- Controls (Event Handlers) ----------
 // Runs every time a key goes down.
 function keyDown(event) {
-  Tone.start(); // browsers only allow sound after the player has pressed something
+  let now = Tone.now(); // browsers only allow sound after the player has pressed something
 
   // Holding a key down sends keydown again and again. Only react to the first one.
   if (event.repeat === false) {
     console.log("Key down:", event.key);
 
     // Example: replace this with your own instrument.
-    if (event.key === exampleKey) {
-      synth.triggerAttack(exampleNote, Tone.now()); // keeps sounding until triggerRelease
+    if (event.key === "a") {
+      for (let i = 0; i < ringPhase1.length; i++) {
+        synth.triggerAttackRelease(ringPhase1[i] + octave, "4n", now + i * 0.4)
+        console.log(ringPhase1[i] + octave)
+      }
     }
   }
 }
 
 // Runs every time a key comes up.
-function keyUp(event) {
-  console.log("Key up:", event.key);
+//function keyUp(event) {
+//  console.log("Key up:", event.key);
 
   // Example: replace this with your own instrument.
-  if (event.key === exampleKey) {
-    synth.triggerRelease(exampleNote, Tone.now());
-  }
-}
+
+//}
 
 // ---------- Setup ----------
 // Setup is run once, at the start of the program. It sets everything up for us!
@@ -80,7 +81,7 @@ function setup() {
 
   // Put your event listener code here
   window.addEventListener("keydown", keyDown);
-  window.addEventListener("keyup", keyUp);
+  //window.addEventListener("keyup", keyUp);
 }
 
 setup(); // Always remember to call setup()!
