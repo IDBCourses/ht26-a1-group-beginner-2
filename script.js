@@ -43,8 +43,10 @@ let octave = "4";
 
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
-const synth = new Tone.PolySynth(Tone.Synth).toDestination(); // can play several notes at once
+const chord = new Tone.PolySynth(Tone.Synth).toDestination(); // can play several notes at once
+const synth = new Tone.Synth().toDestination();
 const distortionEffect = new Tone.Distortion(0.8).toDestination(); // an effect that makes the sound more "gritty"
+
 
 function raiseDistortion() {
   distortion = distortion + 0.1;
@@ -66,19 +68,19 @@ function playSong() {
   let now = Tone.now();
   if (step === 0 && !isPlaying) {
     for (let j = 0; j < ring.phase1.length; j++) {
-      synth.triggerAttackRelease(ring.phase1[j] + octave, duration, now + j * 0.4);
+      chord.triggerAttackRelease(ring.phase1[j] + octave, duration, now + j * 0.4);
       console.log(ring.phase1[j] + octave);
       isPlaying = true;
     }
   } else if (step === 1 && !isPlaying) {
     for (let j = 0; j < ring.phase2.length; j++) {
-      synth.triggerAttackRelease(ring.phase2[j] + octave, duration, now + j * 0.4);
+      chord.triggerAttackRelease(ring.phase2[j] + octave, duration, now + j * 0.4);
       console.log(ring.phase2[j] + octave);
       isPlaying = true;
     }
   } else if (step === 2 && !isPlaying) {
     for (let j = 0; j < ring.phase3.length; j++) {
-      synth.triggerAttackRelease(ring.phase3[j] + octave, duration, now + j * 0.4);
+      chord.triggerAttackRelease(ring.phase3[j] + octave, duration, now + j * 0.4);
       console.log(ring.phase3[j] + octave);
       isPlaying = true
     }
@@ -99,7 +101,7 @@ function update() {
 // ---------- Use ----------
 // Use the state to make sound. This is called every 100ms.
 function use() {
-  synth.connect(distortionEffect);
+  chord.connect(distortionEffect);
   setTimeout(use, 100); // call use() again in 100 milliseconds
 }
 
@@ -107,7 +109,6 @@ function use() {
 // Runs every time a key goes down.
 function keyDown(event) {
 let start = Tone.now(); // browsers only allow sound after the player has pressed something
-let i = 0;
   if (event.repeat === false) {
     if (event.key === "a") {
       console.log("Step is " + step);
