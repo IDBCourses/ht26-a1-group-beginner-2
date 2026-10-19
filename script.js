@@ -27,12 +27,21 @@ const ringPhase1 = ["E", "D#", "F#", "E"]
 // ---------- State ----------
 // State variables are the parts of your program that change over time.
 // For example: which octave you're playing in, or whether a drone is on.
-let octave = "4"
+let octave = 4;
 let distortion = 0.1;
+let spacepressed = false;
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
 const synth = new Tone.PolySynth(Tone.Synth).toDestination(); // can play several notes at once
 const distortionEffect = new Tone.Distortion(0.8).toDestination(); // an effect that makes the sound more "gritty"
+
+function changeoctave() {
+  octave = octave + 1;
+  if (octave > 6) {
+    octave = 4;
+  }
+  console.log ("octave changed to:" + octave);
+  }
 
 function raiseDistortion() {
   distortion = distortion + 0.01;
@@ -76,12 +85,18 @@ function keyDown(event) {
     console.log("key down:", event.key);
 
     // Example: replace this with your own instrument.
+    if (event.key === "o"){
+      changeoctave();
+      }
+
     if (event.key === "a") {
       for (let i = 0; i < ringPhase1.length; i++) {
-        synth.triggerAttackRelease(ringPhase1[i] + octave, "4n", now + i * 0.4)
-        console.log(ringPhase1[i] + octave)
+        synth.triggerAttackRelease(
+          ringPhase1[i] + octave,
+          "4n",
+          now + i * 0.4);
       }
-    }
+      }
   }
   if (event.key === "x") {
     raiseDistortion();
@@ -91,6 +106,9 @@ function keyDown(event) {
 
 // Runs every time a key comes up.
 function keyUp(event) {
+  if (event.key === "o") {
+    console.log("space released: normal octave activation");
+  }
   console.log("Key up:", event.key);
   if (event.key === exampleKey)
   // Example: replace this with your own instrument.
@@ -105,7 +123,7 @@ function setup() {
 
   // Put your event listener code here
   window.addEventListener("keydown", keyDown);
-  //window.addEventListener("keyup", keyUp);
+  window.addEventListener("keyup", keyUp);
 }
 
 setup(); // Always remember to call setup()!
