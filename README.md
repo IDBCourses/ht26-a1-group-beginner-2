@@ -2,9 +2,12 @@
 
 **Play it here:** <!-- Paste your GitHub Pages link here, e.g. https://idbcourses.github.io/ht26-a1-group-01/ -->
 
-**Group:** <!-- Names of everyone in the group -->
+**Group:** Mio, James, Andrea, Sofia
 
-<!-- One or two sentences: what kind of instrument is it, and what is it like to play? -->
+Pressing the "a" key or the "Space bar" will play some notes, add distortion to those notes by holding in "x" while the notes are playing.
+To change the octave press "o"
+Swiping accross the keys "1-0" will play a set of notes
+
 
 ## How to play
 
@@ -12,8 +15,11 @@
 
 | Key | What it does                                                |
 | --- | ----------------------------------------------------------- |
-| `A` | Plays a C4 while you hold it down (the example: replace it) |
-|     |                                                             |
+| `A` | PLays 3 sets of 4 notes everytime you press                 |
+| `X` | Hold in "x" while notes are playing to distort the sound   |
+| `O` | When you press "o" the octave the notes are in will go up one, when the octave is 6 and you press again it goes back to 4 |
+|`swipe from 1-0`| Swiping across the keys will play 10 notes |
+| `Space bar`| The space bar plays 4 notes
 
 <!-- Anything else a player needs to know: how to get started, combinations of keys, a good thing to try first. -->
 
