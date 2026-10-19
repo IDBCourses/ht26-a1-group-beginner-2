@@ -48,7 +48,7 @@ const chord = new Tone.PolySynth(Tone.Synth).toDestination(); // can play severa
 const synth = new Tone.Synth().toDestination();
 const distortionEffect = new Tone.Distortion(0.8).toDestination(); // an effect that makes the sound more "gritty"
 
-function changeoctave() {
+function changeoctave() { //Mio's funtion
   octave = octave + 1;
   if (octave > 6) {
     octave = 4;
@@ -56,7 +56,7 @@ function changeoctave() {
   console.log ("octave changed to:" + octave);
   }
 
-function raiseDistortion() {
+function raiseDistortion() { //Ewan's function
   distortion = distortion + 0.1;
   if (distortion > 1) {
     distortion = 1;
@@ -64,7 +64,7 @@ function raiseDistortion() {
   distortionEffect.distortion = distortion;
 }
 
-function lowerDistortion() {
+function lowerDistortion() { //Ewan's function
   distortion = distortion - 0.05;
   if (distortion < 0) {
     distortion = 0;
@@ -72,7 +72,7 @@ function lowerDistortion() {
   distortionEffect.distortion = distortion;
 }
 
-function playSong() {
+function playSong() { //Andrea's function
   let now = Tone.now();
   if (step === 0 && isPlaying === false) {
     isPlaying = true;
@@ -133,11 +133,11 @@ function keyDown(event) {
     console.log("key down:", event.key);
 
     // Example: replace this with your own instrument.
-    if (event.key === "o"){
+    if (event.key === "o"){ //Mio's function
       changeoctave();
       }
 
-    if (event.key === "a") {
+    if (event.key === "a") { //Andrea's function
       console.log("Step is " + step);
       playSong();
     }
@@ -151,14 +151,14 @@ function keyDown(event) {
       playSong();
     }
 
-    for (let i = 0; i < notes.length; i++) {
+    for (let i = 0; i < notes.length; i++) { //Andrea's function
       if (numberKeys.length === notes.length && event.key === numberKeys[i]) {
         console.log(numberKeys.length === notes.length);
         synth.triggerAttackRelease(notes[i] + octave, "16n", start);
       }
     }
   }
-  if (event.key === "x") {
+  if (event.key === "x") { //Ewan's function
     raiseDistortion();
     console.log("x pressed: raising distortion to: " + distortion);
   }
@@ -166,13 +166,10 @@ function keyDown(event) {
 
 // Runs every time a key comes up.
 function keyUp(event) {
-  if (event.key === "o") {
+  if (event.key === "o") { //Mio's function
     console.log("space released: normal octave activation");
   }
   console.log("Key up:", event.key);
-  if (event.key === exampleKey)
-    // Example: replace this with your own instrument.
-    synth.triggerRelease(exampleNote, Tone.now());
 }
 
 // ---------- Setup ----------
