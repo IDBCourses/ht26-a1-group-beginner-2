@@ -26,8 +26,8 @@
 let ring = {
   phase1: ["E", "D#", "F#", "E"],
   phase2: ["B", "D", "C#", "B"],
-  phase3: ["A", "C#", "E", "A"]
-}
+  phase3: ["A", "C#", "E", "A"],
+};
 
 let numberKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 let notes = ["G#", "C#", "B", "D", "E", "B", "A", "C#", "E", "A"];
@@ -37,9 +37,9 @@ let notes = ["G#", "C#", "B", "D", "E", "B", "A", "C#", "E", "A"];
 // For example: which octave you're playing in, or whether a drone is on.
 let step = 0;
 let distortion = 0.1;
-let isPlaying = false
+let isPlaying = false;
 let duration = "4n";
-let octave = "4";
+let octave = 4;
 
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
@@ -47,13 +47,12 @@ const chord = new Tone.PolySynth(Tone.Synth).toDestination(); // can play severa
 const synth = new Tone.Synth().toDestination();
 const distortionEffect = new Tone.Distortion(0.8).toDestination(); // an effect that makes the sound more "gritty"
 
-
 function raiseDistortion() {
   distortion = distortion + 0.1;
   if (distortion > 1) {
     distortion = 1;
   }
-    distortionEffect.distortion = distortion;
+  distortionEffect.distortion = distortion;
 }
 
 function lowerDistortion() {
@@ -66,24 +65,39 @@ function lowerDistortion() {
 
 function playSong() {
   let now = Tone.now();
-  if (step === 0 && !isPlaying) {
+  if (step === 0 && isPlaying === false) {
+    isPlaying = true;
     for (let j = 0; j < ring.phase1.length; j++) {
-      chord.triggerAttackRelease(ring.phase1[j] + octave, duration, now + j * 0.4);
-      console.log(ring.phase1[j] + octave);
-      isPlaying = true;
+      chord.triggerAttackRelease(
+        ring.phase1[j] + octave,
+        duration,
+        now + j * 0.4,
+      );
+      console.log(ring.phase1[j] + octave, isPlaying,"0");
     }
-  } else if (step === 1 && !isPlaying) {
+    isPlaying = false;
+  } else if (step === 1 && isPlaying === false) {
+    isPlaying = true;
     for (let j = 0; j < ring.phase2.length; j++) {
-      chord.triggerAttackRelease(ring.phase2[j] + octave, duration, now + j * 0.4);
-      console.log(ring.phase2[j] + octave);
-      isPlaying = true;
+      chord.triggerAttackRelease(
+        ring.phase2[j] + octave,
+        duration,
+        now + j * 0.4,
+      );
+      console.log(ring.phase2[j] + octave,isPlaying,"1");
     }
-  } else if (step === 2 && !isPlaying) {
+    isPlaying = false;
+  } else if (step === 2 && isPlaying === false) {
+    isPlaying = true;
     for (let j = 0; j < ring.phase3.length; j++) {
-      chord.triggerAttackRelease(ring.phase3[j] + octave, duration, now + j * 0.4);
-      console.log(ring.phase3[j] + octave);
-      isPlaying = true
+      chord.triggerAttackRelease(
+        ring.phase3[j] + octave,
+        duration,
+        now + j * 0.4,
+      );
+      console.log(ring.phase3[j] + octave,isPlaying,"2");
     }
+    isPlaying = false;
   }
 }
 
@@ -91,11 +105,9 @@ function playSong() {
 // Update the state. This is called every 100ms.
 function update() {
   // Example: replace this with your own instrument.
-  isPlaying = !isPlaying
   lowerDistortion();
   setTimeout(update, 100); // call update() again in 100 milliseconds
   console.log("Update: lowering distortion to: " + distortion);
-
 }
 
 // ---------- Use ----------
@@ -104,11 +116,10 @@ function use() {
   chord.connect(distortionEffect);
   setTimeout(use, 100); // call use() again in 100 milliseconds
 }
-
 // ---------- Controls (Event Handlers) ----------
 // Runs every time a key goes down.
 function keyDown(event) {
-let start = Tone.now(); // browsers only allow sound after the player has pressed something
+  let start = Tone.now(); // browsers only allow sound after the player has pressed something
   if (event.repeat === false) {
     if (event.key === "a") {
       console.log("Step is " + step);
@@ -119,18 +130,17 @@ let start = Tone.now(); // browsers only allow sound after the player has presse
       step = 0;
     }
     if (event.key === " ") {
-    console.log("Key down ");
-    step = 2
-    playSong();
+      console.log("Key down ");
+      step = 2;
+      playSong();
     }
 
     for (let i = 0; i < notes.length; i++) {
-        if (numberKeys.length === notes.length && event.key === numberKeys[i]) {
-          console.log(numberKeys.length === notes.length);
+      if (numberKeys.length === notes.length && event.key === numberKeys[i]) {
+        console.log(numberKeys.length === notes.length);
         synth.triggerAttackRelease(notes[i] + octave, "16n", start);
       }
     }
-
   }
   if (event.key === "x") {
     raiseDistortion();
@@ -138,13 +148,12 @@ let start = Tone.now(); // browsers only allow sound after the player has presse
   }
 }
 
-
 // Runs every time a key comes up.
 function keyUp(event) {
   console.log("Key up:", event.key);
   if (event.key === exampleKey)
-  // Example: replace this with your own instrument.
-  synth.triggerRelease(exampleNote, Tone.now());
+    // Example: replace this with your own instrument.
+    synth.triggerRelease(exampleNote, Tone.now());
 }
 
 // ---------- Setup ----------
