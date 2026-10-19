@@ -35,17 +35,26 @@ let notes = ["G#", "C#", "B", "D", "E", "B", "A", "C#", "E", "A"];
 // ---------- State ----------
 // State variables are the parts of your program that change over time.
 // For example: which octave you're playing in, or whether a drone is on.
-let step = 0;
+let octave = 4;
 let distortion = 0.1;
 let isPlaying = false;
 let duration = "4n";
-let octave = 4;
+let step = 0;
+
 
 // ---------- Sound ----------
 // Make the instruments and plug them into the speakers.
 const chord = new Tone.PolySynth(Tone.Synth).toDestination(); // can play several notes at once
 const synth = new Tone.Synth().toDestination();
 const distortionEffect = new Tone.Distortion(0.8).toDestination(); // an effect that makes the sound more "gritty"
+
+function changeoctave() {
+  octave = octave + 1;
+  if (octave > 6) {
+    octave = 4;
+  }
+  console.log ("octave changed to:" + octave);
+  }
 
 function raiseDistortion() {
   distortion = distortion + 0.1;
@@ -121,6 +130,13 @@ function use() {
 function keyDown(event) {
   let start = Tone.now(); // browsers only allow sound after the player has pressed something
   if (event.repeat === false) {
+    console.log("key down:", event.key);
+
+    // Example: replace this with your own instrument.
+    if (event.key === "o"){
+      changeoctave();
+      }
+
     if (event.key === "a") {
       console.log("Step is " + step);
       playSong();
@@ -150,6 +166,9 @@ function keyDown(event) {
 
 // Runs every time a key comes up.
 function keyUp(event) {
+  if (event.key === "o") {
+    console.log("space released: normal octave activation");
+  }
   console.log("Key up:", event.key);
   if (event.key === exampleKey)
     // Example: replace this with your own instrument.
@@ -164,7 +183,7 @@ function setup() {
 
   // Put your event listener code here
   window.addEventListener("keydown", keyDown);
-  //window.addEventListener("keyup", keyUp);
+  window.addEventListener("keyup", keyUp);
 }
 
 setup(); // Always remember to call setup()!
