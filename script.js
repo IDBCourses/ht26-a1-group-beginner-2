@@ -31,6 +31,7 @@ let ring = {
 
 let numberKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 let notes = ["G#", "C#", "B", "D", "E", "B", "A", "C#", "E", "A"];
+const durations = ['16n', '8n', '4n', '2n'];
 
 // ---------- State ----------
 // State variables are the parts of your program that change over time.
@@ -72,6 +73,13 @@ function lowerDistortion() { //Ewan's function
   distortionEffect.distortion = distortion;
 }
 
+function changeDuration(direction) { //Sofiia's function
+  let i = durations.index0f(duration);
+  i = (i + direction + durations.length) % durations.length;
+  duration = durations[i];
+  console.log('Durations[i];
+              }
+  
 function playSong() { //Andrea's function
   let now = Tone.now();
   if (step === 0 && isPlaying === false) {
@@ -161,6 +169,8 @@ function keyDown(event) {
   if (event.key === "x") { //Ewan's function
     raiseDistortion();
     console.log("x pressed: raising distortion to: " + distortion);
+    if(event.key === 'ArrowUp') changeDuration(1);
+     if(event.key === 'ArrowDown') changeDuration(-1)
   }
 }
 
